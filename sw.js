@@ -1,6 +1,6 @@
 // Guarda la pantalla de carga y los íconos para que la app abra rápido.
 // Los datos de la tesorería siempre se piden en línea a Google.
-var CACHE = 'tesoreria-jcc-v1';
+var CACHE = 'tesoreria-jcc-v2';
 var ARCHIVOS = ['./', 'index.html', 'manifest.webmanifest', 'escudo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon.png'];
 
 self.addEventListener('install', function (e) {

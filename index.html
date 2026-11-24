@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Tesorería · Plantel Superior de Caballeros</title>
   <meta name="theme-color" content="#AF0720">
+  <meta name="color-scheme" content="dark">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,6 +16,7 @@
   <style>
     html, body { margin: 0; height: 100%; background: #AF0720; overflow: hidden; }
     body { font: 15px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: #fff; }
+    #tope { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top); background: #AF0720; z-index: 3; }
     #app { position: fixed; top: env(safe-area-inset-top); left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - env(safe-area-inset-top)); border: 0; background: #fff; }
     #carga { position: fixed; inset: 0; display: grid; place-items: center; background: #AF0720; transition: opacity .25s; }
     #carga.listo { opacity: 0; pointer-events: none; }
@@ -29,6 +31,7 @@
   </style>
 </head>
 <body>
+  <div id="tope"></div>
   <div id="carga" role="status">
     <div class="centro">
       <img src="escudo.png" alt="Escudo del Jockey Club Córdoba">
