@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tesorería · Plantel Superior de Caballeros</title>
+  <meta name="theme-color" content="#AF0720">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Tesorería JCC">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    html, body { margin: 0; height: 100%; background: #AF0720; overflow: hidden; }
+    body { font: 15px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: #fff; }
+    #app { position: fixed; top: env(safe-area-inset-top); left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - env(safe-area-inset-top)); border: 0; background: #fff; }
+    #carga { position: fixed; inset: 0; display: grid; place-items: center; background: #AF0720; transition: opacity .25s; }
+    #carga.listo { opacity: 0; pointer-events: none; }
+    .centro { text-align: center; padding: 24px; }
+    .centro img { width: 112px; height: 112px; object-fit: contain; }
+    .centro p { margin: 18px 0 0; opacity: .9; }
+    .centro button { margin-top: 16px; border: 1px solid #fff; background: none; color: #fff; border-radius: 999px; padding: 9px 18px; font: inherit; }
+    .barra { width: 120px; height: 3px; margin: 22px auto 0; background: rgba(255,255,255,.3); border-radius: 2px; overflow: hidden; position: relative; }
+    .barra i { position: absolute; top: 0; height: 100%; width: 40%; background: #fff; animation: va 1s infinite ease-in-out; }
+    @keyframes va { from { left: -40%; } to { left: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .barra i { animation: none; left: 30%; } }
+  </style>
+</head>
+<body>
+  <div id="carga" role="status">
+    <div class="centro">
+      <img src="escudo.png" alt="Escudo del Jockey Club Córdoba">
+      <div class="barra"><i></i></div>
+      <p id="msj">Cargando la tesorería…</p>
+      <button id="reintentar" hidden>Probar de nuevo</button>
+    </div>
+  </div>
+  <iframe id="app" title="Tesorería del Plantel Superior de Caballeros" allow="clipboard-write; clipboard-read; web-share"></iframe>
+  <script>
+    // Link de la aplicación web de Apps Script (Implementar > Administrar las implementaciones).
+    var APP_URL = 'https://script.google.com/macros/s/AKfycbyRSUVL9F2s0La6WJ2O0KOtZJ2GNSYqz2t4jRv_K2ubdqIPi4549h9WwDBPB3Rnc7u5Vw/exec';
+
+    var marco = document.getElementById('app');
+    var carga = document.getElementById('carga');
+    var msj = document.getElementById('msj');
+    var boton = document.getElementById('reintentar');
+    var demora;
+
+    function abrir() {
+      carga.classList.remove('listo');
+      boton.hidden = true;
+      msj.textContent = 'Cargando la tesorería…';
+      clearTimeout(demora);
+      demora = setTimeout(function () {
+        msj.textContent = navigator.onLine === false ? 'No hay conexión a internet.' : 'Está tardando más de lo normal.';
+        boton.hidden = false;
+      }, 15000);
+      // Pasa los datos del link personal (?j=...&c=...) a la app.
+      marco.src = APP_URL + location.search;
+    }
+    marco.addEventListener('load', function () {
+      clearTimeout(demora);
+      setTimeout(function () { carga.classList.add('listo'); }, 250);
+    });
+    boton.addEventListener('click', abrir);
+    window.addEventListener('online', function () { if (!boton.hidden) abrir(); });
+    abrir();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+  </script>
+</body>
+</html>
